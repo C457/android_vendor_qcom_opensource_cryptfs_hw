@@ -1,28 +1,25 @@
 ifeq ($(TARGET_HW_DISK_ENCRYPTION),true)
+
 LOCAL_PATH:= $(call my-dir)
+
 include $(CLEAR_VARS)
 
-LOCAL_PROPRIETARY_MODULE := true
+LOCAL_SRC_FILES := \
+    cryptfs_hw.c
 
-sourceFiles := \
-               cryptfs_hw.c
+LOCAL_C_INCLUDES := \
+    hardware/libhardware/include/hardware/
 
-commonSharedLibraries := \
-                        libcutils \
-                        libutils \
-                        libdl \
-                        libhardware
-commonIncludes := \
-                  hardware/libhardware/include/hardware/
+LOCAL_SHARED_LIBRARIES := \
+    libcutils \
+    libutils \
+    libdl \
+    libhardware
 
-LOCAL_C_INCLUDES := $(commonIncludes)
-LOCAL_SRC_FILES := $(sourceFiles)
-
-LOCAL_MODULE_TAGS       := optional
-LOCAL_MODULE:= libcryptfs_hw
-LOCAL_SHARED_LIBRARIES := $(commonSharedLibraries)
-
+LOCAL_MODULE := libcryptfs_hw
 LOCAL_MODULE_OWNER := qcom
+LOCAL_MODULE_TAGS := optional
+LOCAL_PROPRIETARY_MODULE := true
 
 ifeq ($(TARGET_SWV8_DISK_ENCRYPTION),true)
 LOCAL_CFLAGS += -DCONFIG_SWV8_DISK_ENCRYPTION
@@ -35,4 +32,5 @@ LOCAL_CFLAGS += -DUSE_ICE_FOR_STORAGE_ENCRYPTION
 endif
 
 include $(BUILD_SHARED_LIBRARY)
-endif
+
+endif # TARGET_HW_DISK_ENCRYPTION
